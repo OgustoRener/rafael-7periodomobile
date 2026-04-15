@@ -33,7 +33,6 @@ export default function ListScreen() {
       (snapshot) => {
         const list = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
 
-        // Ordena no app (evita problemas com orderBy/index/campos ausentes)
         list.sort((a, b) => {
           const aSec = a?.createdAt?.seconds ?? 0;
           const bSec = b?.createdAt?.seconds ?? 0;

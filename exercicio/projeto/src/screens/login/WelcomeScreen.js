@@ -9,7 +9,6 @@ export default function WelcomeScreen({ navigation }) {
 
   const handleLogout = () => {
     signOut(auth).then(() => {
-      // Remove o usuário da sessão e volta para o Login
       navigation.replace('Login');
     }).catch((error) => {
       console.error(error);
@@ -18,7 +17,6 @@ export default function WelcomeScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {/* Pegamos o email do usuário logado dinamicamente via auth.currentUser */}
       <Text style={styles.welcomeText}>Bem-vindo!</Text>
       <Text style={styles.emailText}>{auth.currentUser?.email}</Text>
 
@@ -48,7 +46,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   button: {
-    backgroundColor: '#dc3545', // Cor vermelha para indicar saída
+    backgroundColor: '#dc3545',
     paddingHorizontal: 30,
     paddingVertical: 10,
     borderRadius: 8,

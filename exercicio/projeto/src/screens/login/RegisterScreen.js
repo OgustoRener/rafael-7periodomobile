@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 
-// Importando o deleteUser para a lógica de Rollback
 import { createUserWithEmailAndPassword, deleteUser } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../../config/firebaseConfig';
 
 export default function RegisterScreen({ navigation }) {
-  const [name, setName] = useState('');
+  const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [birthDate, setBirthDate] = useState('');
@@ -17,7 +16,7 @@ export default function RegisterScreen({ navigation }) {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const handleRegister = async () => {
-    if (!name || !email || !password || !birthDate) {
+    if (!nome || !email || !password || !birthDate) {
       setModalMessage('Por favor, preencha todos os campos.');
       setIsSuccess(false);
       setModalVisible(true);
@@ -27,26 +26,21 @@ export default function RegisterScreen({ navigation }) {
     let userCreated = null;
 
     try {
-      // 1. Cria o usuário no Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      userCreated = userCredential.user; // Armazena a referência do usuário criado
+      userCreated = userCredential.user;
 
-      // 2. Salva os dados no Firestore Database
-      await setDoc(doc(db, 'users', userCreated.uid), {
-        name: name,
+      await setDoc(doc(db, 'usuarios', userCreated.uid), {
+        nome: nome,
         email: email,
         birthDate: birthDate,
         createdAt: new Date().toISOString()
       });
 
-      // 3. Tudo ocorreu bem
       setModalMessage('Cadastro realizado com sucesso!');
       setIsSuccess(true);
       setModalVisible(true);
 
     } catch (error) {
-      // 4. Lógica de Rollback (Reversão)
-      // Se o usuário foi criado no Auth, mas o Firestore falhou, nós o apagamos.
       if (userCreated && error.code !== 'auth/email-already-in-use') {
         try {
           await deleteUser(userCreated);
@@ -57,7 +51,6 @@ export default function RegisterScreen({ navigation }) {
 
       setIsSuccess(false);
 
-      // Tratamento de mensagens
       if (error.code === 'auth/email-already-in-use') {
         setModalMessage('Este e-mail já está em uso.');
       } else if (error.code === 'auth/weak-password') {
@@ -85,8 +78,8 @@ export default function RegisterScreen({ navigation }) {
       <TextInput
         style={styles.input}
         placeholder="Nome completo"
-        value={name}
-        onChangeText={setName}
+        value={nome}
+        onChangeText={setNome}
       />
 
       <TextInput

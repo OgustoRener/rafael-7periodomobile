@@ -39,7 +39,6 @@ function ScrollScreen() {
   return (
     <Tab.Navigator
       screenOptions={{
-        // Deixa o header por conta do Drawer (hambúrguer padrão)
         headerShown: false,
         tabBarActiveTintColor: '#000',
         tabBarLabelStyle: { fontSize: 13, fontWeight: 'bold' },
@@ -56,7 +55,6 @@ function ModalScreen() {
   return (
     <Tab.Navigator
       screenOptions={{
-        // Deixa o header por conta do Drawer (hambúrguer padrão)
         headerShown: false,
         tabBarActiveTintColor: '#000',
         tabBarLabelStyle: { fontSize: 13, fontWeight: 'bold' },

@@ -7,7 +7,6 @@ export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // Estados para controlar o Modal de feedback
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
 
@@ -22,7 +21,6 @@ export default function LoginScreen({ navigation }) {
       await signInWithEmailAndPassword(auth, email, password);
       navigation.replace('Home');
     } catch (error) {
-      // Tratamento de erros de login
       if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
         setModalMessage('Usuário ou senha incorretos. Verifique seus dados.');
       } else {

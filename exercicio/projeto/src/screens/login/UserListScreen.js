@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Modal, Alert } from 'react-native';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../config/firebaseConfig';
-import { Ionicons } from '@expo/vector-icons'; // Ícones nativos do Expo
+import { Ionicons } from '@expo/vector-icons';
 
 export default function UserListScreen({ navigation }) {
   const [users, setUsers] = useState([]);
@@ -10,9 +10,8 @@ export default function UserListScreen({ navigation }) {
   const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
 
-  // Busca usuários no Firestore
   const fetchUsers = async () => {
-    const querySnapshot = await getDocs(collection(db, 'users'));
+    const querySnapshot = await getDocs(collection(db, 'usuarios'));
     const userList = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     setUsers(userList);
   };
@@ -34,7 +33,7 @@ export default function UserListScreen({ navigation }) {
     try {
       await deleteDoc(doc(db, 'users', userToDelete.id));
       setModalDeleteVisible(false);
-      fetchUsers(); // Atualiza a lista
+      fetchUsers();
     } catch (error) {
       Alert.alert("Erro", "Não foi possível excluir o usuário.");
     }
@@ -43,16 +42,16 @@ export default function UserListScreen({ navigation }) {
   const renderUser = ({ item }) => (
     <View style={styles.userCard}>
       <View style={styles.userMainRow}>
-        <Text style={styles.userName}>{item.name}</Text>
+        <Text style={styles.userNome}>{item.nome}</Text>
         <View style={styles.iconGroup}>
           <TouchableOpacity onPress={() => toggleDetails(item.id)}>
-            <Ionicons name={expandedUserId === item.id ? "eye" : "eye-off"} size={24} color="#555" />
+            <Ionicons nome={expandedUserId === item.id ? "eye" : "eye-off"} size={24} color="#555" />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('EditUser', { userData: item })}>
-            <Ionicons name="pencil" size={24} color="#007bff" style={{ marginHorizontal: 15 }} />
+            <Ionicons nome="pencil" size={24} color="#007bff" style={{ marginHorizontal: 15 }} />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => confirmDelete(item)}>
-            <Ionicons name="trash" size={24} color="#dc3545" />
+            <Ionicons nome="trash" size={24} color="#dc3545" />
           </TouchableOpacity>
         </View>
       </View>
@@ -74,12 +73,11 @@ export default function UserListScreen({ navigation }) {
         renderItem={renderUser}
       />
 
-      {/* MODAL DE CONFIRMAÇÃO DE EXCLUSÃO */}
       <Modal visible={modalDeleteVisible} transparent animationType="slide">
         <View style={styles.modalBg}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Confirmar Exclusão</Text>
-            <Text>Deseja realmente excluir {userToDelete?.name}?</Text>
+            <Text>Deseja realmente excluir {userToDelete?.nome}?</Text>
             <View style={styles.modalButtons}>
               <TouchableOpacity onPress={() => setModalDeleteVisible(false)} style={styles.cancelBtn}>
                 <Text>Cancelar</Text>
@@ -99,7 +97,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f5f5f5', padding: 10 },
   userCard: { backgroundColor: '#fff', padding: 15, borderRadius: 10, marginBottom: 10, elevation: 2 },
   userMainRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  userName: { fontSize: 18, fontWeight: 'bold' },
+  userNome: { fontSize: 18, fontWeight: 'bold' },
   iconGroup: { flexDirection: 'row' },
   detailsBox: { marginTop: 10, padding: 10, backgroundColor: '#eee', borderRadius: 5 },
   modalBg: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' },

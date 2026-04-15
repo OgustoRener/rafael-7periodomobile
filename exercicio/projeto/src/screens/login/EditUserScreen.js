@@ -4,32 +4,27 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../config/firebaseConfig';
 
 export default function EditUserScreen({ route, navigation }) {
-  // Recuperamos os dados passados pela navegação
   const { userData } = route.params;
 
-  // Estados apenas para os dados editáveis no Firestore
-  const [name, setName] = useState(userData.name);
+  const [nome, setNome] = useState(userData.nome);
   const [birthDate, setBirthDate] = useState(userData.birthDate);
 
   const handleUpdate = async () => {
-    // Validação simples
-    if (!name || !birthDate) {
+    if (!nome || !birthDate) {
       Alert.alert("Erro", "Todos os campos devem ser preenchidos.");
       return;
     }
 
     try {
-      // Referência ao documento específico do usuário no Firestore
-      const userRef = doc(db, 'users', userData.id);
+      const userRef = doc(db, 'usuarios', userData.id);
 
-      // Atualização dos campos de perfil
       await updateDoc(userRef, {
-        name: name,
+        nome: nome,
         birthDate: birthDate
       });
 
       Alert.alert("Sucesso", "Dados de perfil atualizados com sucesso!");
-      navigation.goBack(); // Retorna para a lista de usuários
+      navigation.goBack();
     } catch (error) {
       console.error(error);
       Alert.alert("Erro", "Não foi possível atualizar os dados no banco de dados.");
@@ -43,8 +38,8 @@ export default function EditUserScreen({ route, navigation }) {
       <Text style={styles.label}>Nome Completo:</Text>
       <TextInput
         style={styles.input}
-        value={name}
-        onChangeText={setName}
+        value={nome}
+        onChangeText={setNome}
         placeholder="Digite o nome"
       />
 
