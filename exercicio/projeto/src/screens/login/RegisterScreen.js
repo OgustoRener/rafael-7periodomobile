@@ -4,7 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal } from 'reac
 // Importando o deleteUser para a lógica de Rollback
 import { createUserWithEmailAndPassword, deleteUser } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import { auth, db } from '../config/firebaseConfig';
+import { auth, db } from '../../config/firebaseConfig';
 
 export default function RegisterScreen({ navigation }) {
   const [name, setName] = useState('');

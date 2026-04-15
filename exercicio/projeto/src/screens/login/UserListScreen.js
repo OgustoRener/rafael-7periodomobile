@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Modal, Alert } from 'react-native';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
-import { db } from '../config/firebaseConfig';
+import { db } from '../../config/firebaseConfig';
 import { Ionicons } from '@expo/vector-icons'; // Ícones nativos do Expo
 
 export default function UserListScreen({ navigation }) {
